@@ -1,77 +1,40 @@
 <template>
   <div id="app">
     <Header />
-    <AddTodo v-on:add-todo="addTodo" />
-    <Todos v-bind:todos="todos" v-on:delete-todo="deleteTodo" />
+    <router-view/>
   </div>
 </template>
 
 <script>
-
 import Header from './components/layouts/Header'
-import Todos from './components/Todos'
-import AddTodo from './components/AddTodo'
-import axios from 'axios'
 
-
-export default {
-  name: 'App',
+export default{
+  name: "app",
   components: {
-    Header,
-    Todos,
-    AddTodo
-  },
-  data(){
-    return{
-      todos:[]
-    }
-  },
-  methods: {
-    deleteTodo(id){
-      axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
-            .then(res => this.todos = this.todos = this.todos.filter(todo => todo.id !== id))
-            .catch(err => console.log(err));
-    },
-
-    addTodo(newTodo){
-      const {title, completed} = newTodo;
-      axios.post('https://jsonplaceholder.typicode.com/todos', {
-          title,
-          completed
-        })
-          .then(res => this.todos = [...this.todos, res.data])
-          .catch(err => console.log(err));
-    }
-  },
-    created(){
-      axios.get('https://jsonplaceholder.typicode.com/todos?_limit=3')
-            .then(res => this.todos = res.data)
-            .catch(err => console.log(err));
-    }
+    Header
+  }
 }
 </script>
 
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.4;
-  }
+#nav {
+  padding: 15px;
+}
 
-  .btn {
-    display: inline-block;
-    border: none;
-    background: #555;
+#nav a {
+    font-weight: bold;
     color: #fff;
-    padding: 7px 20px;
-    cursor: pointer;
-  }
-  .btn:hover {
-    background: #666;
-  }
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
+}
 </style>
